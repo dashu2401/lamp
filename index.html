@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cute Lamp Login - Precise Structure</title>
+  <style>
+    :root {
+      --bg-color: #0b0d10;
+      --card-bg: rgba(22, 27, 34, 0.6);
+      --cord-color: #a0a0a0;
+      --tongue-color: #ff6b81;
+    }
+
+    /* Green Theme */
+    body.theme-green {
+      --current-theme: #2ecc71;
+      --current-glow: rgba(46, 204, 113, 0.4);
+      --current-beam: rgba(46, 204, 113, 0.12);
+      --shade-color: #27ae60;
+    }
+
+    /* Red Theme */
+    body.theme-red {
+      --current-theme: #e74c3c;
+      --current-glow: rgba(231, 76, 60, 0.4);
+      --current-beam: rgba(231, 76, 60, 0.12);
+      --shade-color: #c0392b;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--bg-color);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #fff;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+    }
+
+    /* Lamp Vector Styling */
+    .lamp {
+      height: 48vmin;
+      overflow: visible !important;
+    }
+
+    /* Shade Colors */
+    .lamp-shade {
+      fill: #2c3e50; /* Dark gray-blue shade when OFF */
+      transition: fill 0.3s ease;
+    }
+
+    body.on .lamp-shade {
+      fill: var(--shade-color);
+    }
+
+    /* Light Beam Projection */
+    .lamp-beam {
+      fill: var(--current-beam);
+      transition: opacity 0.3s ease, fill 0.3s ease;
+    }
+
+    body.off .lamp-beam {
+      opacity: 0;
+    }
+
+    /* Pull Cord & Ring Handle */
+    .cord {
+      stroke: var(--cord-color);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      fill: none;
+    }
+
+    .cord-handle {
+      fill: #ffffff;
+      cursor: grab;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    }
+
+    .cord-handle:active {
+      cursor: grabbing;
+    }
+
+    /* Cute Face Expressions */
+    .lamp-tongue {
+      fill: var(--tongue-color);
+    }
+
+    body.off .eye-open,
+    body.off .mouth,
+    body.off .lamp-tongue {
+      display: none;
+    }
+
+    body.on .eye-closed {
+      display: none;
+    }
+
+    /* Login Card Dynamic Glow & Hiding */
+    .login-card {
+      background: var(--card-bg);
+      padding: 40px;
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      border: 2px solid var(--current-theme);
+      width: 280px;
+      box-shadow: 0 0 35px var(--current-glow);
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.4s ease, visibility 0.4s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* NO LOGIN CARD WHEN OFF */
+    body.off .login-card {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .login-card h2 {
+      margin-top: 0;
+      margin-bottom: 24px;
+      text-align: center;
+      font-size: 1.6rem;
+      letter-spacing: 0.5px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: #999;
+      margin-bottom: 6px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      box-sizing: border-box;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      color: #fff;
+      outline: none;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: var(--current-theme);
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.1s ease;
+    }
+
+    .login-btn:active {
+      transform: scale(0.98);
+    }
+
+    .form-footer {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+
+    .forgot-link {
+      color: #888;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .forgot-link:hover {
+      color: #fff;
+    }
+  </style>
+</head>
+<body class="off theme-green">
+
+  <div class="container">
+    <!-- SVG Lamp Character Structure -->
+    <div class="lamp-container">
+      <svg class="lamp" viewBox="0 0 220 320" width="220" height="320">
+        <!-- Light Cone Projection -->
+        <polygon class="lamp-beam" points="35,115 185,115 250,320 -30,320" />
+
+        <!-- Pull Cord String & Ball Ring -->
+        <path id="cord-path" class="cord" d="M 65,110 Q 50,150 65,180" />
+        <circle id="cord-handle" class="cord-handle" cx="65" cy="180" r="7" />
+
+        <!-- Lamp Metallic Stand Column -->
+        <rect x="104" y="110" width="12" height="140" fill="url(#metal-gradient)" rx="4" />
+
+        <!-- 3D Pedestal Base -->
+        <ellipse cx="110" cy="250" rx="45" ry="12" fill="#555" />
+        <ellipse cx="110" cy="247" rx="45" ry="10" fill="url(#base-gradient)" />
+
+        <!-- Lamp Inner Shade Under-rim -->
+        <ellipse cx="110" cy="115" rx="70" ry="15" fill="#f8f9fa" />
+        <ellipse cx="110" cy="115" rx="66" ry="12" fill="#dcdde1" />
+
+        <!-- Lamp Outer Curved Shade -->
+        <path class="lamp-shade" d="M 60,30 Q 110,25 160,30 Q 185,115 180,115 Q 110,128 40,115 Q 35,115 60,30 Z" />
+
+        <!-- Character Face Details -->
+        <g class="face">
+          <!-- Open Happy Eyes -->
+          <ellipse class="eye-open" cx="82" cy="72" rx="4" ry="6" fill="#1e272e" />
+          <ellipse class="eye-open" cx="138" cy="72" rx="4" ry="6" fill="#1e272e" />
+          
+          <!-- Closed Sleeping Eyes -->
+          <path class="eye-closed" d="M 76,72 Q 82,78 88,72" stroke="#666" stroke-width="2.5" fill="none" stroke-linecap="round" />
+          <path class="eye-closed" d="M 132,72 Q 138,78 144,72" stroke="#666" stroke-width="2.5" fill="none" stroke-linecap="round" />
+
+          <!-- Open Smiling Mouth & Tongue -->
+          <path class="mouth" d="M 98,80 Q 110,95 122,80 Z" fill="#1e272e" />
+          <path class="lamp-tongue" d="M 102,86 Q 110,95 118,86 Z" />
+        </g>
+
+        <!-- SVG Gradients -->
+        <defs>
+          <linearGradient id="metal-gradient" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#888" />
+            <stop offset="50%" stop-color="#eee" />
+            <stop offset="100%" stop-color="#777" />
+          </linearGradient>
+          <linearGradient id="base-gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#aaa" />
+            <stop offset="100%" stop-color="#444" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- Login Form Card -->
+    <div class="login-card">
+      <h2>Welcome Back</h2>
+      <form class="login-form">
+        <div class="input-group">
+          <label>Username</label>
+          <input type="text" placeholder="Enter username" required>
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" placeholder="Enter password" required>
+        </div>
+        <button type="submit" class="login-btn">Login</button>
+        <div class="form-footer">
+          <a href="#" class="forgot-link">Forgot Password?</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const body = document.body;
+    const handle = document.getElementById('cord-handle');
+    const path = document.getElementById('cord-path');
+
+    const restY = 180;
+    const triggerY = 220;
+    let currentY = restY;
+    let isDragging = false;
+    
+    // Sequence Cycles: 0 = OFF, 1 = Green ON, 2 = OFF, 3 = Red ON
+    let cycleStep = 0;
+
+    function updateCord(y) {
+      currentY = y;
+      handle.setAttribute('cy', y);
+      
+      // Calculate realistic dynamic curve displacement while pulling
+      const pullOffset = (y - restY) * 0.3;
+      const midY = (110 + y) / 2;
+      path.setAttribute('d', `M 65,110 Q ${50 - pullOffset},${midY} 65,${y}`);
+    }
+
+    function onStart(e) {
+      isDragging = true;
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onEnd);
+      document.addEventListener('touchmove', onMove);
+      document.addEventListener('touchend', onEnd);
+    }
+
+    function onMove(e) {
+      if (!isDragging) return;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const svgRect = handle.ownerSVGElement.getBoundingClientRect();
+      let newY = clientY - svgRect.top;
+      
+      newY = Math.max(restY, Math.min(newY, 240));
+      updateCord(newY);
+    }
+
+    function onEnd() {
+      if (!isDragging) return;
+      isDragging = false;
+
+      // Cycle trigger state logic
+      if (currentY >= triggerY) {
+        cycleStep = (cycleStep + 1) % 4;
+
+        switch (cycleStep) {
+          case 0: // OFF (Black / No Login)
+            body.className = 'off theme-green';
+            break;
+          case 1: // Green ON
+            body.className = 'on theme-green';
+            break;
+          case 2: // OFF (Black / No Login)
+            body.className = 'off theme-red';
+            break;
+          case 3: // Red ON
+            body.className = 'on theme-red';
+            break;
+        }
+      }
+
+      // Physics spring snapback
+      let velocity = 0;
+      const spring = setInterval(() => {
+        const force = (restY - currentY) * 0.2;
+        velocity = (velocity + force) * 0.75;
+        currentY += velocity;
+
+        if (Math.abs(velocity) < 0.1 && Math.abs(restY - currentY) < 0.1) {
+          updateCord(restY);
+          clearInterval(spring);
+        } else {
+          updateCord(currentY);
+        }
+      }, 16);
+
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onEnd);
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('touchend', onEnd);
+    }
+
+    handle.addEventListener('mousedown', onStart);
+    handle.addEventListener('touchstart', onStart);
+  </script>
+</body>
+</html>
